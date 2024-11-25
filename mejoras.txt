@@ -1,4 +1,4 @@
 1- Mejorar error handling para devolver errores con más info
-2- usar API de gmail para mails
-3- hacer que el send de transactions sea a través de un endpoint
-4- hacer tests
+2- hacer que el send de transactions sea a través de un endpoint
+3- hacer tests
+4- Mover router.go

@@ -3,17 +3,27 @@ package email
 import (
 	"fmt"
 	"net/smtp"
+	"os"
 )
 
 func SendEmail(to, subject, body string) error {
-	from := "garribas@fi.uba.ar"
-	password := "Joseputo1"
+	// Read environment variables
+	smtpServer := os.Getenv("SMTP_SERVER")
+	smtpPort := os.Getenv("SMTP_PORT")
+	emailFrom := os.Getenv("EMAIL_FROM")
 
-	smtpHost := "smtp.gmail.com"
-	smtpPort := "587"
+	// Ensure environment variables are set
+	if smtpServer == "" || smtpPort == "" || emailFrom == "" {
+		return fmt.Errorf("SMTP configuration not set")
+	}
 
-	msg := fmt.Sprintf("Subject: %s\n\n%s", subject, body)
-	auth := smtp.PlainAuth("", from, password, smtpHost)
+	message := []byte(fmt.Sprintf("Subject: %s\r\n\r\n%s\r\n", subject, body))
 
-	return smtp.SendMail(smtpHost+":"+smtpPort, auth, from, []string{to}, []byte(msg))
+	// Send the email
+	err := smtp.SendMail(fmt.Sprintf("%s:%s", smtpServer, smtpPort), nil, emailFrom, []string{to}, message)
+	if err != nil {
+		return fmt.Errorf("failed to send email: %w", err)
+	}
+	fmt.Println("Email sent successfully!")
+	return nil
 }
