@@ -17,9 +17,14 @@ func SendEmail(to, subject, body string) error {
 		return fmt.Errorf("SMTP configuration not set")
 	}
 
-	message := []byte(fmt.Sprintf("Subject: %s\r\n\r\n%s\r\n", subject, body))
+	message := []byte(fmt.Sprintf(
+		"Subject: %s\r\n"+
+			"MIME-Version: 1.0\r\n"+
+			"Content-Type: text/html; charset=\"UTF-8\"\r\n"+
+			"\r\n"+
+			"%s",
+		subject, body))
 
-	// Send the email
 	err := smtp.SendMail(fmt.Sprintf("%s:%s", smtpServer, smtpPort), nil, emailFrom, []string{to}, message)
 	if err != nil {
 		return fmt.Errorf("failed to send email: %w", err)

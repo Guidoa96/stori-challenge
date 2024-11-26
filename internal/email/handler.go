@@ -4,19 +4,23 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"stori/internal/processing"
 )
 
 func SendEmailHandler(w http.ResponseWriter, r *http.Request) {
 	filePath := "transactions.csv"
 
-	transactions, err := processing.ReadTransactions(filePath)
+	transactions, err := ReadTransactions(filePath)
 	if err != nil {
 		http.Error(w, "Failed reading transactions.csv", http.StatusInternalServerError)
 	}
 
-	summary := processing.GenerateSummary(transactions)
-	emailBody := FormatSummaryEmail(summary)
+	summary := GenerateSummary(transactions)
+	emailBody, err := FormatSummaryEmail(summary)
+	if err != nil {
+		err = fmt.Errorf("failed to format email body - %w", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
 	err = SendEmail("client@transaction.com", "Transaction Summary", emailBody)
 	if err != nil {

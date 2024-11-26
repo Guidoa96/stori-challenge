@@ -12,18 +12,12 @@ func main() {
 	// Connect to the database
 	dbConn, err := mysql.Connect()
 	if err != nil {
-		panic(err)
+		log.Fatalf("Error starting mysql DB: %s", err)
 	}
 	defer dbConn.Close()
 
-	// TODO: deleteSave the transaction
-	/*err = dao.SaveTransaction(dbConn, transactions[0])
-	if err != nil {
-		log.Fatalf("Failed to save transaction: %v", err)
-	}*/
-
 	// Set up routes
-	routes := router.SetupRoutes()
+	routes := router.SetupRoutes(dbConn)
 
 	// Start the server
 	fmt.Println("Server starting on :8080")

@@ -1,0 +1,3 @@
+1- Improve error handling to return errors with more information
+2- Improve responses formatting
+3- Implement tests

@@ -42,6 +42,53 @@ To run this application, ensure the following software is installed on your mach
 
 Here, you can view all emails sent by the application.
 
+## Endpoints
+
+### The application has the following endpoints:
+
+1. **Send an email**
+   ```bash
+   http://localhost:8080/send_email
+   ```
+   This endpoint will send a stylized email with a transaction summary based on the contents of transactionvs.csv.
+   Navigate to the MailHog interface to view the email.
+
+
+2. **Create Account**
+   ```bash
+   http://localhost:8080/account?account_number=123456789
+   ```
+   This endpoint creates a new account in the database. It requires an account number as a query parameter. The Method must be a POST.
+
+
+3. **Get Account Balance**
+   ```bash
+   http://localhost:8080/account?account_number=123456789
+   ```
+   This endpoint gets the account balance for a given account_number in the database. It requires an account number as a query parameter. The Method must be a GET.
+
+
+4. **Save Transaction**
+   ```bash
+   http://localhost:8080/transactions
+   ```
+   This endpoint saves a transaction for a specific account_number in the database. It requires an account number and an amount in a JSON body. The Method must be a POST.
+   The body should look like this:
+   ```json
+   {
+       "account_number": "123456789",
+       "amount": 100
+   }
+   ```
+
+5. **Get Transactions**
+   ```bash
+    http://localhost:8080/transactions?account_number=123456789
+   ```
+   This endpoint gets all transactions for a specific account_number in the database. It requires an account number as a query parameter.
+   The Method must be a GET.
+
+To check existent accounts and transactions in the database, check the init.sql file.
 
 
 
